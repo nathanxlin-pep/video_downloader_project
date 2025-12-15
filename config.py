@@ -19,14 +19,20 @@ audio_format_var = None
 video_format_var = None
 video_quality_var = None
 
-
+#this function creates the stringvars with default values
+#this needs to be called after the root window is created in main
+# stringvars need a root window to exist
 def configinit():
+    # global allows us to modify variables outside the function scope
     global audio_format_var, video_format_var, video_quality_var
     audio_format_var = tk.StringVar(value='mp3')
     video_format_var = tk.StringVar(value='mp4')
     video_quality_var = tk.StringVar(value='1080')
 
-
+#this function opens the audio config window
+#it creates a new window with radiobuttons for selecting audio format
+#options are automatically saved
+#the save and close button is for placebo
 def open_audio_config():
     top = tk.Toplevel()
     top.geometry('400x600')
@@ -35,6 +41,10 @@ def open_audio_config():
 
     title = tk.Label(top, text='Format:', bg='#2d2d2d', fg='#dfdfdf')
     title.pack(pady=5)
+
+    # create radiobuttons for each audio format
+    # variable sets the stringvar to change when the radiobutton is selected
+    # value sets the value to set the stringvar to when the radiobutton is selected
 
     mp3 = tk.Radiobutton(top, text='mp3', variable=audio_format_var, value='mp3', bg='#2d2d2d', fg='#dfdfdf')
     mp3.pack(anchor='w', padx=20, pady=20)
@@ -48,19 +58,29 @@ def open_audio_config():
     m4a = tk.Radiobutton(top, text='m4a', variable=audio_format_var, value='m4a', bg='#2d2d2d', fg='#dfdfdf')
     m4a.pack(anchor='w', padx=20, pady=20)
 
+    # create a button to close the window
+    # .destroy destroys the window
     close = tk.Button(top, text='Save and Close', command=top.destroy, bg='#404040', fg='#ffffff')
     close.pack(anchor='n', pady=150)
 
 
+#this function opens the video config window
+#it creates a new window with radiobuttons for selecting video format and quality
+#when the user closes the window, the settings are automatically saved in the stringvars
 def open_video_config():
     top = tk.Toplevel()
     top.title('Video Config')
     top.geometry('400x600')
     top.configure(bg='#2d2d2d')
 
+
+
     title = tk.Label(top, text='Format:', bg='#2d2d2d', fg='#dfdfdf')
     title.pack(pady=5)
 
+    # create radiobuttons for each video format
+    # variable sets the stringvar to change when the radiobutton is selected
+    # value sets the value to set the stringvar to when the radiobutton is selected
     mp4 = tk.Radiobutton(top, text='mp4', variable=video_format_var, value='mp4', bg='#2d2d2d', fg='#dfdfdf')
     mp4.pack(anchor='w', padx=20)
 
@@ -76,6 +96,10 @@ def open_video_config():
     qualityTitle = tk.Label(top, text='Quality:', bg='#2d2d2d', fg='#dfdfdf')
     qualityTitle.pack(pady=5)
 
+
+
+
+    # create radiobuttons for each video quality
     best = tk.Radiobutton(top, text='best', variable=video_quality_var, value='best', bg='#2d2d2d', fg='#dfdfdf')
     best.pack(anchor='w', padx=20)
 

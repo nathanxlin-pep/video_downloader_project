@@ -104,7 +104,7 @@ def main():
 
     # ---------- global variables -------------------------------------------------------------
     # tk.Tk creates the root window
-    # the root window is the main window of the program 
+    # the root window is the main window of the program
     root = tk.Tk()
     root.geometry('1200x600')
     root.title('Downloader')
@@ -147,11 +147,19 @@ def main():
     # ---- GUI ----------------------------------------------------
 
     # 1. Links (Top Left)
+    # tk.Label creates a label
+    # text sets the text of the label
+    # font sets the font of the label
+    # fg sets the foreground color, which is the text color
     link_label = tk.Label(entryframe, text='Links (one per line):', font=('Arial', 10, 'bold'), bg='#2d2d2d', fg='#dfdfdf')
     #anchor makes the label stick to the west side of the screen, and expand from there.
     link_label.pack(anchor='w')
 
-
+    # tk.Text creates a text widget
+    # height sets the height of the text widget
+    # bd sets the border width
+    # relief sets the border style
+    # insertbackground sets the color of the cursor
     link_entry = tk.Text(entryframe, height=8, bd=2, relief='groove', bg='#3c3c3c', fg='#dfdfdf', insertbackground='#dfdfdf')
     link_entry.pack(fill='x', pady=(0, 10))
 
@@ -170,6 +178,8 @@ def main():
     config_menu.add_command(label='Video Options', command=config.open_video_config)
     config_menu.add_separator()
     config_menu.add_command(label='Audio Options', command=config.open_audio_config)
+    # .add_cascade adds a cascade to the menubar
+    # a cascade is a menu that opens another menu
     menubar.add_cascade(label='Config', menu=config_menu)
 
 
@@ -178,6 +188,14 @@ def main():
     #everything is anchored to the west here in order to make everything consistent
     #these are all in the entryframe.
     button_label.pack(anchor='w')
+    # tk.Radiobutton creates a radiobutton
+    # radiobuttons are buttons that can be selected
+    # only one radiobutton in a group can be selected at a time
+    # variable sets the stringvar to change when the radiobutton is selected
+    # value sets the value to set the stringvar to when the radiobutton is selected
+    # selectcolor sets the color of the radiobutton when selected
+    # command sets the function to run when the radiobutton is clicked
+    # lambda allows us to pass parameters to the function
     video_opt_button = tk.Radiobutton(ctrl_box, text='Video', variable=mode_var, value='Video', bg='#2d2d2d', fg='#dfdfdf', selectcolor='#505050', command=lambda: config_menu.entryconfig('Video Options', state=tk.NORMAL))
     video_opt_button.pack(anchor='w', padx=10)
     audio_opt_button = tk.Radiobutton(ctrl_box, text='Audio Only', variable=mode_var, value='Audio', bg='#2d2d2d', fg='#dfdfdf', selectcolor='#505050', command=lambda: config_menu.entryconfig('Video Options', state=tk.DISABLED))
@@ -208,39 +226,58 @@ def main():
 
     log_scroll = tk.Scrollbar(logframe, bg='#404040')
     log_scroll.pack(side='right', fill='y')
+    # yscrollcommand sets the function to call when the scrollbar is moved
+    # state=tk.DISABLED makes the text widget read only
     log_text = tk.Text(logframe, height=8, bd=2, relief='groove', bg='#3c3c3c', fg='#dfdfdf', insertbackground='#dfdfdf', yscrollcommand=log_scroll.set, state=tk.DISABLED)
     log_text.pack(fill='both', expand=True)
+    # .config configures the scrollbar
+    # command sets the function to call when the scrollbar is moved
+    # .yview scrolls the text widget vertically
     log_scroll.config(command=log_text.yview)
     logframe.pack(fill='both', expand=True)
 
     # 5. Folder Tree (Right Side)
+    # tk.Canvas creates a canvas
+    # a canvas is a widget that can display other widgets
     folder_canvas = tk.Canvas(folderframe, bg='#2d2d2d')
-    folder_scroll = tk.Scrollbar(folderframe, orient='vertical', command=folder_canvas.yview, bg='#404040')
+    folder_scroll = tk.Scrollbar(folderframe, command=folder_canvas.yview, bg='#404040')
     folder_canvas.config(yscrollcommand=folder_scroll.set)
 
     folder_scroll.pack(side='right', fill='y')
     folder_canvas.pack(side='left', fill='both', expand=True)
 
+
+    #create a frame to hold the folder tree
     tree_inner = tk.Frame(folder_canvas, bg='#2d2d2d')
+    # .create_window creates a window in the canvas
+    # window sets the widget to display in the window
+    # anchor sets where the widget is anchored in the windo
     canvas_win_id = folder_canvas.create_window((0, 0), window=tree_inner, anchor='nw')
-
-
 
     # Add create folder button at the top of the folder frame
     folder_controls = tk.Frame(folderframe, bg='#2d2d2d')
     folder_controls.pack(side='top', fill='x', padx=5, pady=5)
 
+    # tk.PhotoImage creates a image
+    # file sets the path to the image file
     plus_icon = tk.PhotoImage(file='plus_sign.png')
+    # image sets the image to display on the button
     create_folder_button = tk.Button(folder_controls, image=plus_icon, command=create_new_folder, bg='#404040')
+    # this line prevents the image from being garbage collected
+    # without it, the image will disappear
     create_folder_button.image = plus_icon
     create_folder_button.pack(side='left')
 
+    # .bind binds an event to a function
+    # <Configure> is the event that is triggered when a widget is resized
     tree_inner.bind('<Configure>', update_scroll)
 
     # Populate the folder tree
     refresh_folders()
 
     log('Ready.')
+    # .mainloop starts the tkinter event loop
+    # this keeps the window open
     root.mainloop()
 
 main()
