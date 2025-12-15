@@ -104,7 +104,7 @@ def main():
 
     # ---------- global variables -------------------------------------------------------------
     # tk.Tk creates the root window
-    # the root window is the main window of the program
+    # the root window is the main window of the program 
     root = tk.Tk()
     root.geometry('1200x600')
     root.title('Downloader')
